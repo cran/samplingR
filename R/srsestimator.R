@@ -1,14 +1,15 @@
-#'@title Simple Ramdom Sampling estimator
+#'@title Simple Ramdom Sampling parameter estimation.
 #'@description Function to make estimations of diferent parameters based on
 #'a Simple Random Sample.
 #'
 #'
-#'@param N Size of the total data set.
+#'@param N Number of instances of the data set.
 #'@param data Sample of the data. It must only contain a single column of the
 #'data to estimate.
-#'@param estimator One of "total", "mean".
-#'@param alpha Optional value to determine the estimation error and build 1-alpha
-#' confidence interval of the estimator.
+#'@param estimator One of "total", "mean", "proportion", "class total". Default is "total".
+#'@param replace Whether the sample has been taken with replacement or not.
+#'@param alpha Optional value to calculate estimation error and build 1-alpha
+#'confidence interval.
 #'
 #'
 #'@return A list containing different interest values:
@@ -26,45 +27,111 @@
 #'data<-rnorm(200, 100, 20)
 #'sample<-data[samplingR::srs(200, 50)]
 #'tau<-sum(data);tau
-#'srsestimator(200, sample, "total", 0.05)
+#'srsestimator(200, sample, "total", alpha=0.05)
 #'
+#'
+#'mu<-mean(data);mu
+#'srsestimator(200, sample, "mean", alpha=0.05)
 #'@export
 
 
-srsestimator<-function(N, data, estimator, alpha=0.05){
-  if(estimator != "total" && estimator != "mean") stop('Estimator should be one of "total", "mean".')
-  if(!missing(alpha) && (alpha<0 || alpha>1)) stop("Alpha value should be between 0 and 1.")
-  #if(dim(data)[2]>1) stop("Data must have a single column of data.")
+srsestimator<-function(N, data, estimator=c("total", "mean", "proportion", "class total"), replace=FALSE, alpha){
+
+  estimator = match.arg(estimator)
+
+  #Aceptance conditions
+  if(estimator != "total" && estimator != "proportion" && estimator!="mean" && estimator!="class total") stop('Estimator must be one of c("total", "proportion", "mean", "class total").')
+  if( (estimator == "proportion" || estimator == "class total") && !all(data==0 | data==1)) stop('Data must be of values 0, 1 for proportion and class total estimation.')
+  if(!missing(alpha) && (alpha<0 || alpha>1)) stop("Alpha value must range between 0 and 1.")
+
   #Size of the sample
   n<-length(data)
-  f<-n/N
-  if (estimator == "total"){
-    estimator<-N*sum(data/n)
-    var<-N*N*(1-f)*var(data)/n
-    #sampling error
-    serror<-sqrt(var)
+
+  #SRS estimation
+  if(!replace){
+    f<-n/N
+    if (estimator == "total"){
+      estimator<-N*sum(data/n)
+      var<-N*N*(1-f)*var(data)/n
+      serror<-sqrt(var)
+    }
+    else if(estimator == "proportion"){
+      estimator<-sum(data/n)
+      var<-(1-f)*estimator*(1-estimator)/(n-1)
+      serror<-sqrt(var)
+    }
+    else if(estimator == "mean"){
+      estimator<-sum(data/n)
+      var<-(1-f)*var(data)/(n-1)
+      serror<-sqrt(var)
+    }
+    else if(estimator == "class total"){
+      estimator<-N*sum(data/n)
+      var<-N*N*(1-f)*(estimator/N)*(1-(estimator/N))/(n-1)
+      serror<-sqrt(var)
+    }
   }
-  else if(estimator == "mean"){
-    estimator<-sum(data/n)
-    var<-(1-f)*estimator*(1-estimator)/(n-1)
-    serror<-sqrt(var)
+
+  #SRS with replacement estimation
+  else{
+    if(estimator == "total"){
+      estimator<-N*sum(data/n)
+      var<-N*N*var(data)/n
+      serror<-sqrt(var)
+    }
+    else if(estimator=="proportion"){
+      estimator<-sum(data/n)
+      var<-estimator*(1-estimator)/(n-1)
+      serror<-sqrt(var)
+    }
+    else if(estimator == "mean"){
+      estimator<-sum(data/n)
+      var<-var(data)/(n)
+      serror<-sqrt(var)
+    }
+    else if(estimator == "class total"){
+      estimator<-N*sum(data/n)
+      var<-N*N*(estimator/N)*(1-(estimator/N))/(n-1)
+      serror<-sqrt(var)
+    }
   }
-  #Estimation error
+
   if(!missing(alpha)){
     esterror<-qnorm(1-alpha/2)*serror
     confint<-c(estimator-esterror, estimator+esterror)
+    return(list("estimator" = estimator, "variance" = var, "sampling.error" = serror,
+                "estimation.error" = esterror, "confint" = confint))
   }
 
-  return(list("estimator" = estimator, "variance" = var, "sampling.error" = serror,
-              "estimation.error" = esterror, "confint" = confint))
+  return(list("estimator" = estimator, "variance" = var, "sampling.error" = serror))
+
 
 }
 
 
-
+##Ejemplos total
 # data<-rnorm(200, 100, 20)
-# dataf<-as.data.frame(data)
-# sample<-data[RSampling::srs(200, 50)]
+# sample<-data[samplingR::srs(200, 50)]
 # tau<-sum(data);tau
-# srsestimator(200, sample, "total", 0.05)
+# srsestimator(200, sample, "total", alpha=0.05)
+#
+# sampleR<-data[samplingR::srs(200,50, replace=TRUE)]
+# srsestimator(200, sampleR, "total",replace=TRUE, alpha=0.05)
 
+##Ejemplos mean
+# mu<-mean(data);mu
+# srsestimator(200, sample, "mean", alpha=0.05)
+
+
+# #Ejemplos proportion
+# dataP<-sample(c(0,1), replace=TRUE, size=200)
+# dataP
+# p<-mean(dataP);p
+# sampleP<-dataP[samplingR::srs(200, 50)]
+# sampleP
+# srsestimator(200, sampleP, "proportion", alpha=0.05)
+
+
+# #Ejemplos class total
+# sum(dataP)
+# srsestimator(200, sampleP, "class total", alpha=0.05)

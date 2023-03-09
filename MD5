@@ -1,6 +1,10 @@
-b6467b3544bbd5ecb83ffc9c37dc1157 *DESCRIPTION
-c21329f471f83e93aeac37a9b709d1a9 *NAMESPACE
+4edca392f142cdcc5be1f5a25706a5d3 *DESCRIPTION
+89561e9f958f5e29c9c5f55ceed559a6 *NAMESPACE
+c51e11fc90399a26d903fc79d429c186 *R/samplesize.R
 416f7545e47336cb7bca77b162ed3b24 *R/srs.R
-e0fa253eedc0a11de0656d3c1f75bf13 *R/srsestimator.R
+fb83b34a8b94cb1a095f46f77e9328bd *R/srsdomainestimator.R
+dcf81612c8c7181cb98715d774c20c28 *R/srsestimator.R
+f54bbe200eb4eeb68ca68029e33745e0 *man/samplesize.Rd
 4bc7af99740d40d39edddb1c7dee25cc *man/srs.Rd
-d56b0e04cb37043ad72c25d72d17ae69 *man/srsestimator.Rd
+57369d2f9cd901c9fef0bb2bca0cb630 *man/srsdomainestimator.Rd
+00ac10c9fe5eb79a800d839064943fb3 *man/srsestimator.Rd
