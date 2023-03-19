@@ -39,8 +39,9 @@ Function to make estimations of diferent parameters on a given domain
 based on a Simple Random Sample.
 }
 \details{
-data columns must be arranged with interest values on the first column
-and domain values on the last column. Domain parameter can be either numeric or character
+Data columns must be arranged with interest values on the first column
+and domain values on the last column.\cr
+Domain parameter can be either numeric or character
 and must be equal to one of the values of the domain column of data.
 }
 \examples{

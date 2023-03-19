@@ -41,7 +41,7 @@ a Simple Random Sample.
 }
 \examples{
 data<-rnorm(200, 100, 20)
-sample<-data[samplingR::srs(200, 50)]
+sample<-data[srs(200, 50)]
 tau<-sum(data);tau
 srsestimator(200, sample, "total", alpha=0.05)
 

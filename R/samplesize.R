@@ -15,9 +15,12 @@
 #'@return Number of instances of the sample to be taken.
 #'
 #'@details If the sample size result is not a whole number the number returned is
-#'the next whole number so samplesize>=n is satisfied.
-#'To estimate sample size of estimators "total" and "mean" estimated quasivariance must be provided. If the error is relative then estimated mean must also be provided.
-#'To estimate sample size of estimator "proportion" and "class total" estimated proportion must be provided. If p is not specified sample size will be estimated based on worst-case scenario of p=0.5.
+#'the next whole number so samplesize>=n is satisfied.\cr
+#'To estimate sample size of estimators "total" and "mean" estimated quasivariance
+#'must be provided. If the error is relative then estimated mean must also be provided.\cr
+#'To estimate sample size of estimator "proportion" and "class total" estimated
+#'proportion must be provided. If p is not specified sample size will be estimated
+#' based on worst-case scenario of p=0.5.\cr
 #'N must be always be provided for calculations.
 #'
 #'@examples

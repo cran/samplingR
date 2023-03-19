@@ -25,7 +25,7 @@
 #'
 #'@examples
 #'data<-rnorm(200, 100, 20)
-#'sample<-data[samplingR::srs(200, 50)]
+#'sample<-data[srs(200, 50)]
 #'tau<-sum(data);tau
 #'srsestimator(200, sample, "total", alpha=0.05)
 #'
@@ -62,12 +62,12 @@ srsestimator<-function(N, data, estimator=c("total", "mean", "proportion", "clas
     }
     else if(estimator == "mean"){
       estimator<-sum(data/n)
-      var<-(1-f)*var(data)/(n-1)
+      var<-(1-f)*var(data)/n
       serror<-sqrt(var)
     }
     else if(estimator == "class total"){
       estimator<-N*sum(data/n)
-      var<-N*N*(1-f)*(estimator/N)*(1-(estimator/N))/(n-1)
+      var<-N*N*(1-f)*estimator*(1-estimator)/(n-1)
       serror<-sqrt(var)
     }
   }
@@ -86,12 +86,12 @@ srsestimator<-function(N, data, estimator=c("total", "mean", "proportion", "clas
     }
     else if(estimator == "mean"){
       estimator<-sum(data/n)
-      var<-var(data)/(n)
+      var<-var(data)/n
       serror<-sqrt(var)
     }
     else if(estimator == "class total"){
       estimator<-N*sum(data/n)
-      var<-N*N*(estimator/N)*(1-(estimator/N))/(n-1)
+      var<-N*N*estimator*(1-estimator)/(n-1)
       serror<-sqrt(var)
     }
   }

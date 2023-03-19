@@ -18,8 +18,9 @@
 #' \item confint
 #'}
 #'
-#'@details data columns must be arranged with interest values on the first column
-#'and domain values on the last column. Domain parameter can be either numeric or character
+#'@details Data columns must be arranged with interest values on the first column
+#'and domain values on the last column.\cr
+#'Domain parameter can be either numeric or character
 #'and must be equal to one of the values of the domain column of data.
 #'
 #'@references César Pérez (1999) Técnicas de muestreo estadístico. Teoría, práctica y aplicaciones informáticas. 193-195
