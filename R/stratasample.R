@@ -12,12 +12,14 @@
 #'On return list each strata sample can be accessed calling object$strataname where
 #'strataname are values of the last column of the original data.
 #'
+#'@importFrom dplyr bind_rows
+#'
 #'@examples
 #'data<-cbind(rnorm(500, 50, 20), rep(c("clase 1", "clase 2","clase 3","clase4"),125))
-#'stratifiedsample(data=data, n=c(10,20,30,40))
+#'stratasample(data=data, n=c(10,20,30,40))
 #'@export
 
-stratifiedsample <- function(data, n, replace=FALSE){
+stratasample <- function(data, n, replace=FALSE){
 
   data<-as.data.frame(data)
   data[,1]<-as.numeric(data[,1])
@@ -39,6 +41,7 @@ stratifiedsample <- function(data, n, replace=FALSE){
     sample[[i]]<-srs(N=N[i], n=n[i], data=domaindata[[i]], replace=replace)
   }
   names(sample)<-clase
+  sample<-dplyr::bind_rows(sample)      #opcion devolviendo un solo dataframe (mejor en caso de tener ya la muestra)
   return(sample)
 }
 

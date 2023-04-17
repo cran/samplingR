@@ -54,3 +54,4 @@ ctvarestimator<-function(N, n, estimator, replace=FALSE){
   if(!replace)return(N*N*(1-f)*estimator*(1-estimator)/(n-1))
   else return(N*N*estimator*(1-estimator)/(n-1))
 }
+

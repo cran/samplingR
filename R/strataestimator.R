@@ -19,21 +19,39 @@
 #'}
 #'
 #'@details Nh length must be equal to number of strata in data.\cr
-#'data is meant to be a returned object of \code{\link{stratifiedsample}} function.
-#'
+#'data is meant to be a returned object of \code{\link{stratasample}} function.
+#'@importFrom methods is
 #'@export
 
-stratifiedestimator<-function(N, Nh, data, estimator=c("total", "mean", "proportion", "class total"), replace=FALSE, alpha){
+strataestimator<-function(N, Nh, data, estimator=c("total", "mean", "proportion", "class total"), replace=FALSE, alpha){
   estimator<-match.arg(estimator)
-  if(estimator != "total" && estimator!="mean" && estimator!="proportion" && estimator!="class total") stop('Estimator must be one of c("total", "mean", "proportion", "class total").')
-  if( (estimator == "proportion" || estimator == "class total") && !all(sapply(data, all01list))) stop('Data must be of values 0, 1 for proportion and class total estimation.')
+  if(estimator != "total" && estimator!="mean" && estimator!="proportion" && estimator!="class total")
+    stop('Estimator must be one of c("total", "mean", "proportion", "class total").')
+  if( (estimator == "proportion" || estimator == "class total") && !all(sapply(data, all01list)))
+    stop('Data must be of values 0, 1 for proportion and class total estimation.')
   if(sum(Nh)!=N) stop("Sum of strata sizes is not equal to population size.")
+
+  #Transforms data into manageable list structure
+  if(!is(data, "list")){
+    data<-as.data.frame(data)
+    data[,1]<-as.numeric(data[,1])
+
+    clase<-levels(as.factor(data[,-1])) #strata names
+
+    if(length(clase) != length(Nh)) stop("Strata sizes length (Nh) must be equal to number of strata.")
+    domaindata<-list()  #separated strata
+    for(i in clase){
+      domaindata[[i]]<-data[which(data[,-1]==i),]
+    }
+    data<-domaindata
+  }
+
 
   nh<-sapply(data, nrow) #Sample strata size
   Nh<-as.array(Nh) #Strata real size
   Wh<-Nh/N  #Strata relative size
 
-  data<-sapply(data, function(data){return(data[,1])}) #data without strata column
+  data<-lapply(data, function(data){return(data[,1])}) #data without strata column
 
   #Estimators are the same with and without replacement, only variance estimation differs.
   if (estimator == "total") {
@@ -73,39 +91,39 @@ stratifiedestimator<-function(N, Nh, data, estimator=c("total", "mean", "proport
 # #No replacement
 #
 # #Total and mean
-# data<-cbind(rnorm(500, 50, 20), rep(c("clase 1", "clase 2","clase 3","clase4"),125))
+# data<-cbind(rnorm(500, 50, 20), rep(c("class 1", "class 2","class 3","class 4"),125))
 # N<-500;Nh<-rep(125,4);colnames(data)<-c("X", "Strata")
-# sample<-stratifiedsample(data=data, n=c(10,20,30,40));sample
+# sample<-stratasample(data=data, n=c(10,20,30,40));sample
 # tau<-sum(as.numeric(data[,1]));tau
-# stratifiedestimator(500, Nh, data=sample, estimator="total", alpha=0.05)
+# strataestimator(500, Nh, data=sample, estimator="total", alpha=0.05)
 # mu<-mean(as.numeric(data[,1]));mu
-# stratifiedestimator(500, Nh, data=sample, estimator="mean", alpha=0.05)
+# strataestimator(500, Nh, data=sample, estimator="mean", alpha=0.05)
 #
 # #Proportion and class total
 # data01<-cbind(sample(c(0,1), size=500, replace=T), rep(c("clase 1", "clase 2","clase 3","clase4"),125))
 # N<-500;Nh<-rep(125,4);colnames(data01)<-c("X", "Strata")
-# sample01<-stratifiedsample(data=data01, n=c(10,20,30,40));sample01
+# sample01<-stratasample(data=data01, n=c(10,20,30,40));sample01
 #
 # p<-mean(as.numeric(data01[,1]));p
-# stratifiedestimator(500, Nh, data=sample01, estimator="proportion", alpha=0.05)
+# strataestimator(500, Nh, data=sample01, estimator="proportion", alpha=0.05)
 #
 # a<-sum(as.numeric(data01[,1]));a
-# stratifiedestimator(500, Nh, data=sample01, estimator="class total", alpha=0.05)
+# strataestimator(500, Nh, data=sample01, estimator="class total", alpha=0.05)
 #
 #
 # #Replacement
 # #Total and mean
-# sampleR<-stratifiedsample(data=data, n=c(10,20,30,40), replace=TRUE);sampleR
+# sampleR<-stratasample(data=data, n=c(10,20,30,40), replace=TRUE);sampleR
 # tau
-# stratifiedestimator(500, Nh, data=sampleR, estimator="total", alpha=0.05, replace=TRUE)
+# strataestimator(500, Nh, data=sampleR, estimator="total", alpha=0.05, replace=TRUE)
 # mu
-# stratifiedestimator(500, Nh, data=sampleR, estimator="mean", alpha=0.05, replace=TRUE)
+# strataestimator(500, Nh, data=sampleR, estimator="mean", alpha=0.05, replace=TRUE)
 #
 # #Proportion and class total
-# sample01R<-stratifiedsample(data=data01, n=c(10,20,30,40), replace=TRUE);sample01R
+# sample01R<-stratasample(data=data01, n=c(10,20,30,40), replace=TRUE);sample01R
 #
 # p<-mean(as.numeric(data01[,1]));p
-# stratifiedestimator(500, Nh, data=sample01R, estimator="proportion", alpha=0.05, replace=TRUE)
+# strataestimator(500, Nh, data=sample01R, estimator="proportion", alpha=0.05, replace=TRUE)
 #
 # a<-sum(as.numeric(data01[,1]));a
-# stratifiedestimator(500, Nh, data=sample01R, estimator="class total", alpha=0.05, replace=TRUE)
+# strataestimator(500, Nh, data=sample01R, estimator="class total", alpha=0.05, replace=TRUE)

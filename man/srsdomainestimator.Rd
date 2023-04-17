@@ -5,15 +5,16 @@
 \title{Simple Random Sample parameter estimation of domains.}
 \usage{
 srsdomainestimator(
-  Nj,
+  Nh,
   data,
   estimator = c("total", "mean", "proportion", "class total"),
   domain,
-  replace = FALSE
+  replace = FALSE,
+  alpha
 )
 }
 \arguments{
-\item{Nj}{Number of instances of the data set domain.}
+\item{Nh}{Number of instances of the data set domain.}
 
 \item{data}{Sample of the data. It must constain a column with the data to estimate
 and a second column with the domain of each instance.}
@@ -23,6 +24,9 @@ and a second column with the domain of each instance.}
 \item{domain}{Domain of the sample from which parameter estimation will be done.}
 
 \item{replace}{Whether the sample to be taken can have repeated instances or not.}
+
+\item{alpha}{Optional value to calculate estimation error and build 1-alpha
+confidence interval.}
 }
 \value{
 A list containing different interest values:
@@ -48,9 +52,9 @@ and must be equal to one of the values of the domain column of data.
 data<-cbind(rnorm(500, 50, 20), rep(c(1:2),250))
 sample<-data[srs(500, 100),]
 sum(data[which(data[,-1]==1),1])
-srsdomainestimator(Nj = 250, data = sample, estimator="total", domain=1)
+srsdomainestimator(Nh = 250, data = sample, estimator="total", domain=1)
 
 }
 \references{
-César Pérez (1999) Técnicas de muestreo estadístico. Teoría, práctica y aplicaciones informáticas. 193-195
+Pérez, C. (1999) Técnicas de muestreo estadístico. Teoría, práctica y aplicaciones informáticas. 193-195
 }

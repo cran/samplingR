@@ -15,7 +15,7 @@
 #'@return Number of instances of the sample to be taken.
 #'
 #'@details If the sample size result is not a whole number the number returned is
-#'the next whole number so samplesize>=n is satisfied.\cr
+#'the next whole number so srssamplesize>=n is satisfied.\cr
 #'To estimate sample size of estimators "total" and "mean" estimated quasivariance
 #'must be provided. If the error is relative then estimated mean must also be provided.\cr
 #'To estimate sample size of estimator "proportion" and "class total" estimated
@@ -25,14 +25,14 @@
 #'
 #'@examples
 #'data<-rnorm(200, 100, 20)
-#'n<-samplesize(200, var(data), estimator="total", error=400);n
+#'n<-srssamplesize(200, var(data), estimator="total", error=400);n
 #'sample<-data[samplingR::srs(200, n)]
 #'samplingR::srsestimator(200, sample, "total", alpha=0.05)$sampling.error
 #'
 #'
 #'@export
 
-samplesize<-function(N, var, error, alpha, estimator=c("total", "mean", "proportion", "class total"), p, mean, replace=FALSE, relative=FALSE){
+srssamplesize<-function(N, var, error, alpha, estimator=c("total", "mean", "proportion", "class total"), p, mean, replace=FALSE, relative=FALSE){
 
   estimator=match.arg(estimator)
 
@@ -67,7 +67,6 @@ samplesize<-function(N, var, error, alpha, estimator=c("total", "mean", "proport
       #n estimation with sampling error and alpha
       else{
         k<-qnorm(1-alpha/2)
-        #error<-k*error                #e_alpha = lambda_alpha*error  CAMBIO POR SEGUIR PROCEDIMIENTO DE EJERCICIOS
 
         if(estimator=="total"){
           n0<-k*k*var/(error*error)
@@ -115,7 +114,6 @@ samplesize<-function(N, var, error, alpha, estimator=c("total", "mean", "proport
   #SRS with replacement
   else{
 
-
     if(!relative){
       #n estimation with sampling error only
       if(missing(alpha)){
@@ -137,7 +135,7 @@ samplesize<-function(N, var, error, alpha, estimator=c("total", "mean", "proport
       #n estimation with sampling error and alpha
       else{
         k<-qnorm(1-alpha/2)           #lambda_alpha
-        #error<-k*error                #e_alpha = lambda_alpha*error   CAMBIO POR SEGUIR PROCEDIMIENTO DE EJERCICIOS
+
         if(estimator=="total"){
           var<-var*(N-1)/N
           return(ceiling(k*k*var*N*N/(error*error)))
@@ -170,7 +168,7 @@ samplesize<-function(N, var, error, alpha, estimator=c("total", "mean", "proport
       #n estimation with sampling error and alpha
       else{
         k<-qnorm(1-alpha/2)           #lambda_alpha
-        #error<-k*error                #e_alpha = lambda_alpha*error   CAMBIO POR SEGUIR PROCEDIMIENTO DE EJERCICIOS
+
         if(estimator=="total" || estimator=="mean"){
           c2<-var/(mean*mean)
           return(ceiling(k*k*c2/(error*error)))
@@ -187,11 +185,11 @@ samplesize<-function(N, var, error, alpha, estimator=c("total", "mean", "proport
 # tau<-sum(data);tau
 # mu<-mean(data);mu
 # #alpha not declared
-# n<-samplesize(200, var(data), estimator="total", error=400);n
+# n<-srssamplesize(200, var(data), estimator="total", error=400);n
 # sample<-data[samplingR::srs(200, n)]
 # srsestimator(200, sample, "total", alpha=0.05)
 #
 # #Alpha declared (wrong)
-# n<-samplesize(200, var(data), estimator="total", error=400, alpha=0.05);n
+# n<-srssamplesize(200, var(data), estimator="total", error=400, alpha=0.05);n
 # sample<-data[samplingR::srs(200, n)]
 # srsestimator(200, sample, "total", alpha=0.05)
