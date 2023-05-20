@@ -1,11 +1,12 @@
 #'@title Parameter estimation of stratified data
+#'
 #'@description Function to make estimations of diferent parameters based on
 #'a stratified sample.
 #'
 #'@param N Population size.
 #'@param Nh Size of each population strata.
 #'@param data Stratified sample.
-#'@param estimator One of "total", "mean", "proportion", "class total". Default is "total".
+#'@param estimator Estimator to compute. Can be one of "total", "mean", "proportion", "class total". Default is "total".
 #'@param replace Whether the sample to be taken can have repeated instances or not.
 #'@param alpha Optional value to calculate estimation error and build 1-alpha
 #'
@@ -19,11 +20,11 @@
 #'}
 #'
 #'@details Nh length must be equal to number of strata in data.\cr
-#'data is meant to be a returned object of \code{\link{stratasample}} function.
+#'data is meant to be a returned object of \code{\link{strata.sample}} function.
 #'@importFrom methods is
 #'@export
 
-strataestimator<-function(N, Nh, data, estimator=c("total", "mean", "proportion", "class total"), replace=FALSE, alpha){
+strata.estimator<-function(N, Nh, data, estimator=c("total", "mean", "proportion", "class total"), replace=FALSE, alpha){
   estimator<-match.arg(estimator)
   if(estimator != "total" && estimator!="mean" && estimator!="proportion" && estimator!="class total")
     stop('Estimator must be one of c("total", "mean", "proportion", "class total").')
@@ -93,37 +94,37 @@ strataestimator<-function(N, Nh, data, estimator=c("total", "mean", "proportion"
 # #Total and mean
 # data<-cbind(rnorm(500, 50, 20), rep(c("class 1", "class 2","class 3","class 4"),125))
 # N<-500;Nh<-rep(125,4);colnames(data)<-c("X", "Strata")
-# sample<-stratasample(data=data, n=c(10,20,30,40));sample
+# sample<-strata.sample(data=data, n=c(10,20,30,40));sample
 # tau<-sum(as.numeric(data[,1]));tau
-# strataestimator(500, Nh, data=sample, estimator="total", alpha=0.05)
+# strata.estimator(500, Nh, data=sample, estimator="total", alpha=0.05)
 # mu<-mean(as.numeric(data[,1]));mu
-# strataestimator(500, Nh, data=sample, estimator="mean", alpha=0.05)
+# strata.estimator(500, Nh, data=sample, estimator="mean", alpha=0.05)
 #
 # #Proportion and class total
 # data01<-cbind(sample(c(0,1), size=500, replace=T), rep(c("clase 1", "clase 2","clase 3","clase4"),125))
 # N<-500;Nh<-rep(125,4);colnames(data01)<-c("X", "Strata")
-# sample01<-stratasample(data=data01, n=c(10,20,30,40));sample01
+# sample01<-strata.sample(data=data01, n=c(10,20,30,40));sample01
 #
 # p<-mean(as.numeric(data01[,1]));p
-# strataestimator(500, Nh, data=sample01, estimator="proportion", alpha=0.05)
+# strata.estimator(500, Nh, data=sample01, estimator="proportion", alpha=0.05)
 #
 # a<-sum(as.numeric(data01[,1]));a
-# strataestimator(500, Nh, data=sample01, estimator="class total", alpha=0.05)
+# strata.estimator(500, Nh, data=sample01, estimator="class total", alpha=0.05)
 #
 #
 # #Replacement
 # #Total and mean
-# sampleR<-stratasample(data=data, n=c(10,20,30,40), replace=TRUE);sampleR
+# sampleR<-strata.sample(data=data, n=c(10,20,30,40), replace=TRUE);sampleR
 # tau
-# strataestimator(500, Nh, data=sampleR, estimator="total", alpha=0.05, replace=TRUE)
+# strata.estimator(500, Nh, data=sampleR, estimator="total", alpha=0.05, replace=TRUE)
 # mu
-# strataestimator(500, Nh, data=sampleR, estimator="mean", alpha=0.05, replace=TRUE)
+# strata.estimator(500, Nh, data=sampleR, estimator="mean", alpha=0.05, replace=TRUE)
 #
 # #Proportion and class total
-# sample01R<-stratasample(data=data01, n=c(10,20,30,40), replace=TRUE);sample01R
+# sample01R<-strata.sample(data=data01, n=c(10,20,30,40), replace=TRUE);sample01R
 #
 # p<-mean(as.numeric(data01[,1]));p
-# strataestimator(500, Nh, data=sample01R, estimator="proportion", alpha=0.05, replace=TRUE)
+# strata.estimator(500, Nh, data=sample01R, estimator="proportion", alpha=0.05, replace=TRUE)
 #
 # a<-sum(as.numeric(data01[,1]));a
-# strataestimator(500, Nh, data=sample01R, estimator="class total", alpha=0.05, replace=TRUE)
+# strata.estimator(500, Nh, data=sample01R, estimator="class total", alpha=0.05, replace=TRUE)

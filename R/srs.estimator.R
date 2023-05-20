@@ -6,7 +6,7 @@
 #'@param N Number of instances of the data set.
 #'@param data Sample of the data. It must only contain a single column of the
 #'data to estimate.
-#'@param estimator One of "total", "mean", "proportion", "class total". Default is "total".
+#'@param estimator Estimator to compute. Can be one of "total", "mean", "proportion", "class total". Default is "total".
 #'@param replace Whether the sample has been taken with replacement or not.
 #'@param alpha Optional value to calculate estimation error and build 1-alpha
 #'confidence interval.
@@ -25,17 +25,17 @@
 #'
 #'@examples
 #'data<-rnorm(200, 100, 20)
-#'sample<-data[srs(200, 50)]
+#'sample<-data[srs.sample(200, 50)]
 #'tau<-sum(data);tau
-#'srsestimator(200, sample, "total", alpha=0.05)
+#'srs.estimator(200, sample, "total", alpha=0.05)
 #'
 #'
 #'mu<-mean(data);mu
-#'srsestimator(200, sample, "mean", alpha=0.05)
+#'srs.estimator(200, sample, "mean", alpha=0.05)
 #'@export
 
 
-srsestimator<-function(N, data, estimator=c("total", "mean", "proportion", "class total"), replace=FALSE, alpha){
+srs.estimator<-function(N, data, estimator=c("total", "mean", "proportion", "class total"), replace=FALSE, alpha){
 
   estimator = match.arg(estimator)
 
@@ -111,27 +111,27 @@ srsestimator<-function(N, data, estimator=c("total", "mean", "proportion", "clas
 
 ##Ejemplos total
 # data<-rnorm(200, 100, 20)
-# sample<-data[samplingR::srs(200, 50)]
+# sample<-data[srs.sample(200, 50)]
 # tau<-sum(data);tau
-# srsestimator(200, sample, "total", alpha=0.05)
+# srs.estimator(200, sample, "total", alpha=0.05)
 #
-# sampleR<-data[samplingR::srs(200,50, replace=TRUE)]
-# srsestimator(200, sampleR, "total",replace=TRUE, alpha=0.05)
+# sampleR<-data[srs.sample(200,50, replace=TRUE)]
+# srs.estimator(200, sampleR, "total",replace=TRUE, alpha=0.05)
 
 ##Ejemplos mean
 # mu<-mean(data);mu
-# srsestimator(200, sample, "mean", alpha=0.05)
+# srs.estimator(200, sample, "mean", alpha=0.05)
 
 
 # #Ejemplos proportion
 # dataP<-sample(c(0,1), replace=TRUE, size=200)
 # dataP
 # p<-mean(dataP);p
-# sampleP<-dataP[samplingR::srs(200, 50)]
+# sampleP<-dataP[srs.sample(200, 50)]
 # sampleP
-# srsestimator(200, sampleP, "proportion", alpha=0.05)
+# srs.estimator(200, sampleP, "proportion", alpha=0.05)
 
 
 # #Ejemplos class total
 # sum(dataP)
-# srsestimator(200, sampleP, "class total", alpha=0.05)
+# srs.estimator(200, sampleP, "class total", alpha=0.05)

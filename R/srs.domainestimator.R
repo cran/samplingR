@@ -29,14 +29,14 @@
 #'
 #'@examples
 #'data<-cbind(rnorm(500, 50, 20), rep(c(1:2),250))
-#'sample<-data[srs(500, 100),]
+#'sample<-data[srs.sample(500, 100),]
 #'sum(data[which(data[,-1]==1),1])
-#'srsdomainestimator(Nh = 250, data = sample, estimator="total", domain=1)
+#'srs.domainestimator(Nh = 250, data = sample, estimator="total", domain=1)
 #'
 #'@export
 
 
-srsdomainestimator<-function(Nh, data, estimator=c("total", "mean", "proportion", "class total"), domain, replace=FALSE, alpha){ #data debe ser la muestra por lo que domain no es necesario
+srs.domainestimator<-function(Nh, data, estimator=c("total", "mean", "proportion", "class total"), domain, replace=FALSE, alpha){ #data debe ser la muestra por lo que domain no es necesario
   estimator=match.arg(estimator)
 
   if(missing(domain)) stop("domain must be declared.")
@@ -51,18 +51,18 @@ srsdomainestimator<-function(Nh, data, estimator=c("total", "mean", "proportion"
   #data with domain selected instances only
   domaindata<-data[which(data[,-1]==domain),1]
 
-  return(srsestimator(Nh, domaindata, estimator, replace, alpha))    #TODO como obtener N ya que se si no se conoce Nj se debe conocer N
+  return(srs.estimator(Nh, domaindata, estimator, replace, alpha))    #TODO como obtener N ya que se si no se conoce Nj se debe conocer N
 }
 
 
 #  data<-cbind(rnorm(500, 50, 20), rep(c(1,2),250))
-#  sample<-data[srs(500, 100),]
+#  sample<-data[srs.sample(500, 100),]
 #  sum(data[which(data[,-1]==2),1])
 #  srsdomainestimator(Nj = 250, data = sample, estimator="total", domain=2)
 #
 #
 # # #data.frame si permite tipos char en la clase
 #  data<-data.frame(x=rnorm(500, 50, 20), domain=rep(c("clase 1","clase 2"),250))
-#  sample<-data[srs(500, 100),]
+#  sample<-data[srs.sample(500, 100),]
 #  sum(data[which(data[,-1]=="clase 1"),1])
 #  srsdomainestimator(Nj = 250, data = sample, estimator="total", domain="clase 1")

@@ -16,10 +16,10 @@
 #'
 #'@examples
 #'data<-cbind(rnorm(500, 50, 20), rep(c("clase 1", "clase 2","clase 3","clase4"),125))
-#'stratasample(data=data, n=c(10,20,30,40))
+#'strata.sample(data=data, n=c(10,20,30,40))
 #'@export
 
-stratasample <- function(data, n, replace=FALSE){
+strata.sample <- function(data, n, replace=FALSE){
 
   data<-as.data.frame(data)
   data[,1]<-as.numeric(data[,1])
@@ -38,7 +38,7 @@ stratasample <- function(data, n, replace=FALSE){
 
   sample<-list() #sample of each strata
   for(i in 1:length(clase)){
-    sample[[i]]<-srs(N=N[i], n=n[i], data=domaindata[[i]], replace=replace)
+    sample[[i]]<-srs.sample(N=N[i], n=n[i], data=domaindata[[i]], replace=replace)
   }
   names(sample)<-clase
   sample<-dplyr::bind_rows(sample)      #opcion devolviendo un solo dataframe (mejor en caso de tener ya la muestra)
@@ -46,6 +46,6 @@ stratasample <- function(data, n, replace=FALSE){
 }
 
 # data<-cbind(rnorm(500, 50, 20), rep(c("clase 1", "clase 2","clase 3","clase4"),125))
-# stratifiedsample(n=c(10,20,30,40), data=data)
+# strata.sample(n=c(10,20,30,40), data=data)
 
 

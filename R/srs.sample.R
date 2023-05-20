@@ -12,19 +12,20 @@
 #'
 #'@importFrom stats runif
 #'@examples
-#' srs(10,3)
+#' srs.sample(10,3)
 #'
 #'
 #' data<-matrix(data=c(1:24), nrow=8)
 #' N<-dim(data)[1]
-#' sample<-srs(N, 3, data = data)
+#' sample<-srs.sample(N, 3, data = data)
 #' sample
 #'
 #'@export
 
 
-srs <- function(N, n, replace=FALSE, data){
+srs.sample <- function(N, n, replace=FALSE, data){
   if(N<n) stop("Sample size must be bigger than population size")
+  if(!missing(data) && is(data, "vector")) data<-as.data.frame(data)
   if(!missing(data) && !is.data.frame(data) && !is.matrix(data)) stop("Data must be of class matrix or data.frame")
 
   if(replace){
@@ -47,11 +48,11 @@ srs <- function(N, n, replace=FALSE, data){
 
 # datos<-c(0,1,2,3,4,5,6)
 # N<-length(datos)
-# srs(N,3)
-# muestra<-datos[srs(N, 3, replace=F)]
+# srs.sample(N,3)
+# muestra<-datos[srs.sample(N, 3, replace=F)]
 # muestra
 #
-# muestraR<-datos[srs(N, 3, replace=T)]
+# muestraR<-datos[srs.sample(N, 3, replace=T)]
 # muestraR
 #
 # datos2<-data.frame(rbind(c(1,2,3),
@@ -60,9 +61,9 @@ srs <- function(N, n, replace=FALSE, data){
 #                          c(9,10,11)))
 # names(datos2)=c("A","B","C")
 # datos2
-# muestra2<-datos2[srs(dim(datos2)[1], 3),]
+# muestra2<-datos2[srs.sample(dim(datos2)[1], 3),]
 # muestra2
 #
 # datos2<-matrix(data=c(1:24), nrow=8)
 # datos2
-# srs(dim(datos2)[1], 2, data=datos2)
+# srs.sample(dim(datos2)[1], 2, data=datos2)

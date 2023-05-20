@@ -15,7 +15,7 @@
 #'@return Number of instances of the sample to be taken.
 #'
 #'@details If the sample size result is not a whole number the number returned is
-#'the next whole number so srssamplesize>=n is satisfied.\cr
+#'the next whole number so srs.samplesize>=n is satisfied.\cr
 #'To estimate sample size of estimators "total" and "mean" estimated quasivariance
 #'must be provided. If the error is relative then estimated mean must also be provided.\cr
 #'To estimate sample size of estimator "proportion" and "class total" estimated
@@ -24,15 +24,15 @@
 #'N must be always be provided for calculations.
 #'
 #'@examples
-#'data<-rnorm(200, 100, 20)
-#'n<-srssamplesize(200, var(data), estimator="total", error=400);n
-#'sample<-data[samplingR::srs(200, n)]
-#'samplingR::srsestimator(200, sample, "total", alpha=0.05)$sampling.error
+#' data<-rnorm(200, 100, 20)
+#' n<-srs.samplesize(200, var(data), estimator="total", error=400, alpha=0.05);n
+#' sample<-data[srs.sample(200, n)]
+#' srs.estimator(200, sample, "total", alpha=0.05)$sampling.error
 #'
 #'
 #'@export
 
-srssamplesize<-function(N, var, error, alpha, estimator=c("total", "mean", "proportion", "class total"), p, mean, replace=FALSE, relative=FALSE){
+srs.samplesize<-function(N, var, error, alpha, estimator=c("total", "mean", "proportion", "class total"), p, mean, replace=FALSE, relative=FALSE){
 
   estimator=match.arg(estimator)
 
@@ -40,10 +40,10 @@ srssamplesize<-function(N, var, error, alpha, estimator=c("total", "mean", "prop
   if(!missing(alpha) && (alpha<0 || alpha>1)) stop("Alpha value must range between 0 and 1.")
   if(estimator != "total" && estimator != "proportion" && estimator!="mean" && estimator!="class total") stop('Estimator must be one of c("total", "proportion", "mean", "class total").')
   #p parameter control
-  if((estimator=="proportion" || estimator=="class total") && missing(p)) p<-0.5
+  if((estimator=="proportion" || estimator=="class total") && missing(p)){warning("Necessary p argument missing, will be set to worst case scenario value of 0.5"); p<-0.5}
   if(!missing(p) && (p<0 || p>1)) stop("p value must range between 0 and 1.")
-  if(relative && (error<0 || error>1))stop("relative error must range between 0 and 1")
-  if(relative && (estimator=="total" || estimator=="mean") && missing(mean)) stop("Estimated mean must be declared.")
+  if(relative && (error<0 || error>1))stop("Relative error must range between 0 and 1")
+  if(relative && (estimator=="total" || estimator=="mean") && missing(mean)) stop("For relative error estimated mean must be declared.")
 
   #SRS without replacement
   if(!replace){
@@ -185,11 +185,11 @@ srssamplesize<-function(N, var, error, alpha, estimator=c("total", "mean", "prop
 # tau<-sum(data);tau
 # mu<-mean(data);mu
 # #alpha not declared
-# n<-srssamplesize(200, var(data), estimator="total", error=400);n
-# sample<-data[samplingR::srs(200, n)]
-# srsestimator(200, sample, "total", alpha=0.05)
+# n<-srs.samplesize(200, var(data), estimator="total", error=400);n
+# sample<-data[srs.sample(200, n)]
+# srs.estimator(200, sample, "total", alpha=0.05)
 #
 # #Alpha declared (wrong)
-# n<-srssamplesize(200, var(data), estimator="total", error=400, alpha=0.05);n
-# sample<-data[samplingR::srs(200, n)]
-# srsestimator(200, sample, "total", alpha=0.05)
+# n<-srs.samplesize(200, var(data), estimator="total", error=400, alpha=0.05);n
+# sample<-data[srs.sample(200, n)]
+# srs.estimator(200, sample, "total", alpha=0.05)
