@@ -28,29 +28,30 @@ strata.estimator<-function(N, Nh, data, estimator=c("total", "mean", "proportion
   estimator<-match.arg(estimator)
   if(estimator != "total" && estimator!="mean" && estimator!="proportion" && estimator!="class total")
     stop('Estimator must be one of c("total", "mean", "proportion", "class total").')
-  if( (estimator == "proportion" || estimator == "class total") && !all(sapply(data, all01list)))
-    stop('Data must be of values 0, 1 for proportion and class total estimation.')
-  if(sum(Nh)!=N) stop("Sum of strata sizes is not equal to population size.")
+
 
   #Transforms data into manageable list structure
   if(!is(data, "list")){
     data<-as.data.frame(data)
     data[,1]<-as.numeric(data[,1])
 
-    clase<-levels(as.factor(data[,-1])) #strata names
+    clase<-levels(as.factor(data[,ncol(data)])) #strata names
 
     if(length(clase) != length(Nh)) stop("Strata sizes length (Nh) must be equal to number of strata.")
     domaindata<-list()  #separated strata
     for(i in clase){
-      domaindata[[i]]<-data[which(data[,-1]==i),]
+      domaindata[[i]]<-data[which(data[,ncol(data)]==i),]
     }
     data<-domaindata
   }
 
-
   nh<-sapply(data, nrow) #Sample strata size
   Nh<-as.array(Nh) #Strata real size
   Wh<-Nh/N  #Strata relative size
+
+  if( (estimator == "proportion" || estimator == "class total") && !all(sapply(data, all01list)))
+    stop('Data must be of values 0, 1 for proportion and class total estimation.')
+  if(sum(Nh)!=N) stop("Sum of strata sizes is not equal to population size.")
 
   data<-lapply(data, function(data){return(data[,1])}) #data without strata column
 

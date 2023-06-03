@@ -5,6 +5,14 @@
 #' @param data Population data
 #'
 #' @return Intraclass correlation
+#' @details
+#' This value serves as a comparison between systematic and simple random sampling precision.\cr
+#' At value=1 the systematic precision is minimum. At value=0 both sampling methods precision
+#' are equal. At value= \eqn{\frac{-1}{n-1}} systematic precision is maximum.\cr
+#' Summarising at values between 1 and 0 simple random sampling estimation has more precision
+#' than systematic, so method="srs" should be set at \code{\link{sys.estimator}}.
+#' The other way method="sys" of interpenetrating samples method is better.
+#'
 #' @export
 #'
 #' @examples
@@ -99,13 +107,20 @@ swst<-function(N, n, data){
 #' @param data Population data
 #'
 #' @return Correlation coefficient
+#' @details
+#' This value serves as a comparison between systematic and stratified sampling precision.\cr
+#' At value=1 the systematic precision is minimum. At value=0 both sampling methods precision
+#' are equal. At value= \eqn{\frac{-1}{n-1}} systematic precision is maximum.\cr
+#' Summarising at values between 1 and 0 stratified sampling estimation has more precision
+#' than systematic, so method="strata" should be set at \code{\link{sys.estimator}}.
+#' The other way method="sys" of interpenetrating samples method is better.
 #' @export
 #'
 #' @examples
 #' data<-c(1,3,5,2,4,6,2,7,3)
-#' sys.corrwst(9,3,data)  #0.09022556
+#' sys.intercorr(9,3,data)  #0.09022556
 
-sys.corrwst<-function(N, n, data){
+sys.intercorr<-function(N, n, data){
   s<-0
   k<-N/n
   for(j in 1:k){

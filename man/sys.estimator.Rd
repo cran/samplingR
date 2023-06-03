@@ -43,9 +43,8 @@ A list containing different interest values:
 Parameter estimation on a systematic sample
 }
 \details{
-Variance estimation has no direct formula in systematic sampling, thus estimation method must be done. It should be chosen based on the results of \code{\link{sys.intracorr}}
-and \code{\link{sys.corrwst}} functions. For sys.intracorr values close to 0 simple random sampling should be used for estimation.
-For sys.corrwst values close to 0 stratified sampling should be used. If none of them are close to 0 then "sys" estimation method should be used.\cr
+Variance estimation has no direct formula in systematic sampling, thus estimation method must be done. Refer to \code{\link{sys.intracorr}}
+and \code{\link{sys.intercorr}} functions details for more information. \cr
 "sys" method uses interpenetrating samples method in which t systematic samples of size=\eqn{\frac{n}{t}} are taken to estimate. \eqn{\frac{n}{t}} must be even.\cr
 By choosing the start at random for all the samples they can be considered random taken. With this method population data and t must be given.
 }

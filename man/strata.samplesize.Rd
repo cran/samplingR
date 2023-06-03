@@ -51,7 +51,7 @@ estimator and an optional confidence interval in stratified sampling.
 }
 \details{
 With "proportion" and "class total" estimators variance vector must
-contain \code{\link{var}} return values equal to \eqn{\frac{p*(1-p)}{(Nh-1)}} values.
+contain \code{\link{var}} return values equal to \eqn{\frac{Nh}{(Nh-1)}p*(1-p)} values.
 }
 \examples{
 strata.samplesize(c(120,100,110,50), c(458, 313,407,364), error=5, alpha=0.05, "mean", "prop")

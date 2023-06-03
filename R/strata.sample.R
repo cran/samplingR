@@ -24,12 +24,12 @@ strata.sample <- function(data, n, replace=FALSE){
   data<-as.data.frame(data)
   data[,1]<-as.numeric(data[,1])
 
-  clase<-levels(as.factor(data[,-1])) #strata names
+  clase<-levels(as.factor(data[,ncol(data)])) #strata names
 
   if(length(clase) != length(n)) stop("Strata sample sizes length must be equal to number of strata.")
   domaindata<-list()  #separated strata
   for(i in clase){
-    domaindata[[i]]<-data[which(data[,-1]==i),]
+    domaindata[[i]]<-data[which(data[,ncol(data)]==i),]
   }
 
   N<-sapply(domaindata, nrow) #Strata sizes

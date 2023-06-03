@@ -4,7 +4,15 @@
 \alias{strata.allocation}
 \title{Strata allocation given a sample size}
 \usage{
-strata.allocation(Nh, n, var, ch, alloc = c("unif", "prop", "min", "optim"))
+strata.allocation(
+  Nh,
+  n,
+  var,
+  alloc = c("unif", "prop", "min", "optim"),
+  C,
+  cini,
+  ch
+)
 }
 \arguments{
 \item{Nh}{Vector of population strata sizes.}
@@ -13,9 +21,13 @@ strata.allocation(Nh, n, var, ch, alloc = c("unif", "prop", "min", "optim"))
 
 \item{var}{Vector of strata variances.}
 
-\item{ch}{Vector of costs to take an individual from a strata for the sample.}
-
 \item{alloc}{The allocation method to be used. Default is "unif".}
+
+\item{C}{Total study cost.}
+
+\item{cini}{Overhead study cost.}
+
+\item{ch}{Vector of costs to take an individual from a strata for the sample.}
 }
 \value{
 Vector of strata sample sizes.
@@ -24,6 +36,11 @@ Vector of strata sample sizes.
 Function to allocate the number of samples to be taken for each
 strata given the total sample size and the strata.allocation method. The number of allocations
  returned will be equal to the length of the parameters.
+}
+\details{
+alloc="optim" is the only that requires cost function data.
+Total study and overhead study costs are optional. If given allocation will be done
+so total study cost is not surpassed.s
 }
 \examples{
 strata.allocation(Nh=rep(125,4), n=100, alloc="unif") #25, 25, 25, 25

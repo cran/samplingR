@@ -18,7 +18,7 @@
 #' @return Number of instances of the sample to be taken.
 #'
 #' @details With "proportion" and "class total" estimators variance vector must
-#' contain \code{\link{var}} return values equal to \eqn{\frac{p*(1-p)}{(Nh-1)}} values.
+#' contain \code{\link{var}} return values equal to \eqn{\frac{Nh}{(Nh-1)}p*(1-p)} values.
 #' @export
 #'
 #' @examples
@@ -37,10 +37,12 @@ strata.samplesize<-function(Nh, var, error, alpha, estimator=c("total", "mean", 
   if(length(var) != length(Nh)) stop("Strata size lenght must be equal to strata variance length")
   if(alloc=="optim" && missing(ch)) stop('Strata cost values must be given for alloc="optim"')
   if(alloc=="optim" && (length(ch) != length(Nh))) stop("Strata costs lenght must be equal to strata size length")
-  if( (estimator=="proportion" || estimator == "class total" )
-      && ( (any(var<0) || any(var>0.3)) )) stop("For proportion and class total estimation strata variance values must range between 0 and 0.3")
-  if((estimator=="proportion" || estimator=="class total") && missing(var)){warning("Necessary var argument missing, will be set to worst case scenario value of 0.3 for each strata."); var<-rep(0.3, length(Nh))}
-  if(relative && (estimator=="proportion" || estimator=="class total") && missing(p)) {warning("Necessary p argument missing, will be set to worst case scenario value of 0.5"); p<-0.5}
+
+  if((estimator=="proportion" || estimator=="class total") && missing(var)){
+    warning("Necessary var argument missing, will be set to worst case scenario value for each strata.\n")
+    var<-c(Nh/(Nh-1)*0.25)
+  }
+  if(relative && (estimator=="proportion" || estimator=="class total") && missing(p)) {warning("Necessary p argument missing, will be set to worst case scenario value of 0.5\n"); p<-0.5}
   if(!missing(p) && (p<0 || p>1) )stop("Proportion value must range between 0 and 1")
 
   if(relative && (error<0 || error>1))stop("Relative error must range between 0 and 1")
@@ -242,7 +244,7 @@ strata.samplesize<-function(Nh, var, error, alpha, estimator=c("total", "mean", 
 
   #stratified with replacement
   else{
-    var<-(Nh-1)*var #var<-p*q
+    var<-(Nh-1)/Nh*var #var<-p*q
     #absolute error
     if(!relative){
       if(missing(alpha)){

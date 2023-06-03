@@ -42,14 +42,14 @@ srs.domainestimator<-function(Nh, data, estimator=c("total", "mean", "proportion
   if(missing(domain)) stop("domain must be declared.")
   if(estimator != "total" && estimator!="mean" && estimator!="proportion" && estimator!="class total") stop('Estimator must be one of c("total", "mean", "proportion", "class total").')
   if(missing(Nh)) stop("Nh must be declared.")
-  if(!any(data[,-1]==domain)) stop("Sample data does not contain instances of domain given.")
+  if(!any(data[,ncol(data)]==domain)) stop("Sample data does not contain instances of domain given.")
 
   #data format
   data<-as.data.frame(data)
   data[,1]<-as.numeric(data[,1])
 
   #data with domain selected instances only
-  domaindata<-data[which(data[,-1]==domain),1]
+  domaindata<-data[which(data[,ncol(data)]==domain),1]
 
   return(srs.estimator(Nh, domaindata, estimator, replace, alpha))    #TODO como obtener N ya que se si no se conoce Nj se debe conocer N
 }

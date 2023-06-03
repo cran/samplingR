@@ -21,6 +21,7 @@
 #' strata.samplesize.cost(Nh=c(100,500,200), C=1000, cini=70, ch=c(9,5,12), alloc="prop")
 
 strata.samplesize.cost<-function(Nh, var, C, cini, ch, alloc=c("unif", "prop", "optim")){
+
   alloc=match.arg(alloc)
 
   #Acceptance conditions
@@ -43,7 +44,8 @@ strata.samplesize.cost<-function(Nh, var, C, cini, ch, alloc=c("unif", "prop", "
     return((C-cini)/sum(ch*Wh))
   }
   else{
-    return(sum( ((C-cini)*Wh*sqrt(var)/sqrt(ch))/sum(Wh*sqrt(var)*sqrt(ch))))
+    return(sum( (C-cini)*(Wh*sqrt(var)/sqrt(ch))/sum(Wh*sqrt(var)*sqrt(ch))))
+
   }
 
 }

@@ -55,17 +55,17 @@ srs.estimator<-function(N, data, estimator=c("total", "mean", "proportion", "cla
       var<-N*N*(1-f)*var(data)/n
       serror<-sqrt(var)
     }
-    else if(estimator == "proportion"){
-      estimator<-sum(data/n)
-      var<-(1-f)*estimator*(1-estimator)/(n-1)
-      serror<-sqrt(var)
-    }
     else if(estimator == "mean"){
       estimator<-sum(data/n)
       var<-(1-f)*var(data)/n
       serror<-sqrt(var)
     }
-    else if(estimator == "class total"){
+    else if(estimator == "proportion"){
+      estimator<-sum(data/n)
+      var<-(1-f)*estimator*(1-estimator)/(n-1)
+      serror<-sqrt(var)
+    }
+    else{
       estimator<-N*sum(data/n)
       var<-N*N*(1-f)*estimator*(1-estimator)/(n-1)
       serror<-sqrt(var)
@@ -79,17 +79,17 @@ srs.estimator<-function(N, data, estimator=c("total", "mean", "proportion", "cla
       var<-N*N*var(data)/n
       serror<-sqrt(var)
     }
-    else if(estimator=="proportion"){
-      estimator<-sum(data/n)
-      var<-estimator*(1-estimator)/(n-1)
-      serror<-sqrt(var)
-    }
     else if(estimator == "mean"){
       estimator<-sum(data/n)
       var<-var(data)/n
       serror<-sqrt(var)
     }
-    else if(estimator == "class total"){
+    else if(estimator=="proportion"){
+      estimator<-sum(data/n)
+      var<-estimator*(1-estimator)/(n-1)
+      serror<-sqrt(var)
+    }
+    else{
       estimator<-N*sum(data/n)
       var<-N*N*estimator*(1-estimator)/(n-1)
       serror<-sqrt(var)
