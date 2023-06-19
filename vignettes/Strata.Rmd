@@ -1,8 +1,8 @@
 ---
-title: "Ejemp2sol2020.m Determinar el calculo de tamaño de muestra utilizando distintas afijaciones, considerando costes y sin considerar costes"
+title: "Determinación del calculo de tamaño de muestra utilizando distintas afijaciones, considerando costes y sin considerar costes"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Ejemp2sol2020.m Determinar el calculo de tamaño de muestra utilizando distintas afijaciones, considerando costes y sin considerar costes}
+  %\VignetteIndexEntry{Determinacióndel calculo de tamaño de muestra utilizando distintas afijaciones, considerando costes y sin considerar costes}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,13 +20,14 @@ library(samplingR)
 
 
 ## Preparamos los datos
+La población está compuesta por 2 estratos generados sintéticamente a partir de dos distribuciones normales.
+
 
 ### Primer estrato: pensionistas en CyL
 
 ```{r}
 N1<-585479
 pen<-rnorm(N1, 750, 100)
-propen<-ifelse(pen>950, 1, 0)
 ```
 
 ### Segundo estrato: asalariados en CyL
@@ -34,12 +35,10 @@ propen<-ifelse(pen>950, 1, 0)
 ```{r}
 N2<-932992
 ass<-rnorm(N2, 1500, 500)
-proass<-ifelse(ass>950, 1, 0)
 ```
 
 ```{r}
 datos<-cbind(c(pen, ass), c(rep("pensionista", N1), rep("asalariado", N2)))
-prodatos<-cbind(c(propen, proass), c(rep("pensionista", N1), rep("asalariado", N2)))
 N<-N1+N2
 ```
 
@@ -115,11 +114,15 @@ strata.allocation(Nh=Nh, n=n, var=var, alloc="min")
 
 ```
 
-Opción 3: estimación más conservadora suponiendo cuasivarianza máxima en todos los 
+Opción 3: estimación más conservadora. Suponemos cuasivarianza máxima en todos los 
 estratos = $\frac{N_h}{N_h-1}p(1-p)$ con p=0.5
 
-Si no se fija la varianza en la función la varianza declarada en la función será la máxima
+```{r}
+var<-c(Nh/(Nh-1)*0.5*(1-0.5))
+strata.allocation(Nh=Nh, n=n, var=var, alloc="min")
+```
 
+Si no se fija la varianza en la función se mostrará un warning y la varianza declarada en la función será la máxima para cada estrato.
 ```{r}
 strata.allocation(Nh=Nh, n=n, alloc="min")
 ```

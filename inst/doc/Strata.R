@@ -10,16 +10,13 @@ library(samplingR)
 ## -----------------------------------------------------------------------------
 N1<-585479
 pen<-rnorm(N1, 750, 100)
-propen<-ifelse(pen>950, 1, 0)
 
 ## -----------------------------------------------------------------------------
 N2<-932992
 ass<-rnorm(N2, 1500, 500)
-proass<-ifelse(ass>950, 1, 0)
 
 ## -----------------------------------------------------------------------------
 datos<-cbind(c(pen, ass), c(rep("pensionista", N1), rep("asalariado", N2)))
-prodatos<-cbind(c(propen, proass), c(rep("pensionista", N1), rep("asalariado", N2)))
 N<-N1+N2
 
 ## -----------------------------------------------------------------------------
@@ -62,6 +59,10 @@ sample<-strata.sample(data=datos, n=c(20, 20))
 var<-c(var(sample[which(sample[,2]=="asalariado"),1]), var(sample[which(sample[,2]=="pensionista"),1]))
 strata.allocation(Nh=Nh, n=n, var=var, alloc="min")
 
+
+## -----------------------------------------------------------------------------
+var<-c(Nh/(Nh-1)*0.5*(1-0.5))
+strata.allocation(Nh=Nh, n=n, var=var, alloc="min")
 
 ## -----------------------------------------------------------------------------
 strata.allocation(Nh=Nh, n=n, alloc="min")

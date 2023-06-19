@@ -12,7 +12,7 @@
 
 
 
-<title>Ejemp2sol2020.m Determinar el calculo de tamaño de muestra utilizando distintas afijaciones, considerando costes y sin considerar costes</title>
+<title>Determinación del calculo de tamaño de muestra utilizando distintas afijaciones, considerando costes y sin considerar costes</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -336,9 +336,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Ejemp2sol2020.m Determinar el calculo de
-tamaño de muestra utilizando distintas afijaciones, considerando costes
-y sin considerar costes</h1>
+<h1 class="title toc-ignore">Determinación del calculo de tamaño de
+muestra utilizando distintas afijaciones, considerando costes y sin
+considerar costes</h1>
 
 
 
@@ -350,24 +350,23 @@ y sin considerar costes</h1>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; \__ \ (_| | | | | | | |_) | | | | | | (_| | |\ \</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; |___/\__,_|_| |_| |_| .__/|_|_|_| |_|\__, \_| \_|</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     | |               __/ |</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     |_|              |___/         version 0.1.5</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     |_|              |___/         version 1.0.0</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Type &#39;citation(&quot;samplingR&quot;)&#39; for citing this R package in publications.</span></span></code></pre></div>
 <div id="preparamos-los-datos" class="section level2">
 <h2>Preparamos los datos</h2>
+<p>La población está compuesta por 2 estratos generados sintéticamente a
+partir de dos distribuciones normales.</p>
 <div id="primer-estrato-pensionistas-en-cyl" class="section level3">
 <h3>Primer estrato: pensionistas en CyL</h3>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>N1<span class="ot">&lt;-</span><span class="dv">585479</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pen<span class="ot">&lt;-</span><span class="fu">rnorm</span>(N1, <span class="dv">750</span>, <span class="dv">100</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>propen<span class="ot">&lt;-</span><span class="fu">ifelse</span>(pen<span class="sc">&gt;</span><span class="dv">950</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pen<span class="ot">&lt;-</span><span class="fu">rnorm</span>(N1, <span class="dv">750</span>, <span class="dv">100</span>)</span></code></pre></div>
 </div>
 <div id="segundo-estrato-asalariados-en-cyl" class="section level3">
 <h3>Segundo estrato: asalariados en CyL</h3>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>N2<span class="ot">&lt;-</span><span class="dv">932992</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ass<span class="ot">&lt;-</span><span class="fu">rnorm</span>(N2, <span class="dv">1500</span>, <span class="dv">500</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>proass<span class="ot">&lt;-</span><span class="fu">ifelse</span>(ass<span class="sc">&gt;</span><span class="dv">950</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span></code></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ass<span class="ot">&lt;-</span><span class="fu">rnorm</span>(N2, <span class="dv">1500</span>, <span class="dv">500</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>datos<span class="ot">&lt;-</span><span class="fu">cbind</span>(<span class="fu">c</span>(pen, ass), <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;pensionista&quot;</span>, N1), <span class="fu">rep</span>(<span class="st">&quot;asalariado&quot;</span>, N2)))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>prodatos<span class="ot">&lt;-</span><span class="fu">cbind</span>(<span class="fu">c</span>(propen, proass), <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;pensionista&quot;</span>, N1), <span class="fu">rep</span>(<span class="st">&quot;asalariado&quot;</span>, N2)))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>N<span class="ot">&lt;-</span>N1<span class="sc">+</span>N2</span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>N<span class="ot">&lt;-</span>N1<span class="sc">+</span>N2</span></code></pre></div>
 </div>
 </div>
 <div id="ejercicio-1.-consideremos-una-muestra-global-de-n800-individuos-y-afijacion-uniforme" class="section level2">
@@ -432,20 +431,24 @@ por lo que se deben estimar.</p>
 teórica)</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vart<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="fu">var</span>(pen), <span class="fu">var</span>(ass))</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">strata.allocation</span>(<span class="at">Nh=</span>Nh, <span class="at">n=</span>n, <span class="at">var=</span>vart, <span class="at">alloc=</span><span class="st">&quot;min&quot;</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  89.22724 710.77276</span></span></code></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  89.24617 710.75383</span></span></code></pre></div>
 <p>Opción 2: tomar una muestra previa para estimar las cuasivarianzas de
 los estratos.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sample<span class="ot">&lt;-</span><span class="fu">strata.sample</span>(<span class="at">data=</span>datos, <span class="at">n=</span><span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">20</span>))</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>var<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="fu">var</span>(sample[<span class="fu">which</span>(sample[,<span class="dv">2</span>]<span class="sc">==</span><span class="st">&quot;asalariado&quot;</span>),<span class="dv">1</span>]), <span class="fu">var</span>(sample[<span class="fu">which</span>(sample[,<span class="dv">2</span>]<span class="sc">==</span><span class="st">&quot;pensionista&quot;</span>),<span class="dv">1</span>]))</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">strata.allocation</span>(<span class="at">Nh=</span>Nh, <span class="at">n=</span>n, <span class="at">var=</span>var, <span class="at">alloc=</span><span class="st">&quot;min&quot;</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 614.514 185.486</span></span></code></pre></div>
-<p>Opción 3: estimación más conservadora suponiendo cuasivarianza máxima
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 633.9989 166.0011</span></span></code></pre></div>
+<p>Opción 3: estimación más conservadora. Suponemos cuasivarianza máxima
 en todos los estratos = <span class="math inline">\(\frac{N_h}{N_h-1}p(1-p)\)</span> con p=0.5</p>
-<p>Si no se fija la varianza en la función la varianza declarada en la
-función será la máxima</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">strata.allocation</span>(<span class="at">Nh=</span>Nh, <span class="at">n=</span>n, <span class="at">alloc=</span><span class="st">&quot;min&quot;</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in strata.allocation(Nh = Nh, n = n, alloc = &quot;min&quot;): Necessary var argument missing, will be set to worst case scenario value for each strata.</span></span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>var<span class="ot">&lt;-</span><span class="fu">c</span>(Nh<span class="sc">/</span>(Nh<span class="dv">-1</span>)<span class="sc">*</span><span class="fl">0.5</span><span class="sc">*</span>(<span class="dv">1</span><span class="fl">-0.5</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">strata.allocation</span>(<span class="at">Nh=</span>Nh, <span class="at">n=</span>n, <span class="at">var=</span>var, <span class="at">alloc=</span><span class="st">&quot;min&quot;</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 308.4572 491.5428</span></span></code></pre></div>
+<p>Si no se fija la varianza en la función se mostrará un warning y la
+varianza declarada en la función será la máxima para cada estrato.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">strata.allocation</span>(<span class="at">Nh=</span>Nh, <span class="at">n=</span>n, <span class="at">alloc=</span><span class="st">&quot;min&quot;</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in strata.allocation(Nh = Nh, n = n, alloc = &quot;min&quot;): </span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Necessary var argument missing, will be set to worst case scenario value for each strata.</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 308.4572 491.5428</span></span></code></pre></div>
 <p>La estimación conservadora coincide con el cálculo de afijación
 proporcional.</p>
 </div>
@@ -453,14 +456,14 @@ proporcional.</p>
 <h3>b) Con función de coste igual a la anterior y solución teórica</h3>
 <p>En la afijación de mínima varianza optimizando con una función de
 costes es equivalente a utilizar la afijación óptima.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>size<span class="ot">&lt;-</span><span class="fu">strata.samplesize.cost</span>(<span class="at">Nh=</span>Nh, <span class="at">var=</span>vart, <span class="at">C=</span>C, <span class="at">cini=</span>Cini, <span class="at">ch=</span>ch, <span class="at">alloc=</span><span class="st">&quot;optim&quot;</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Tamaño de muestra&quot;</span>, size)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Tamaño de muestra 319.187553807054&quot;</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>nh.optim<span class="ot">&lt;-</span><span class="fu">floor</span>(<span class="fu">strata.allocation</span>(<span class="at">Nh=</span>Nh, <span class="at">n=</span>size, <span class="at">var=</span>vart, <span class="at">alloc=</span><span class="st">&quot;optim&quot;</span>, <span class="at">C=</span>C, <span class="at">cini=</span>Cini, <span class="at">ch=</span>ch))</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="fu">c</span>(<span class="st">&quot;Estrato 1:&quot;</span>, <span class="st">&quot;Estrato 2&quot;</span>), nh.optim)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Estrato 1: 24&quot; &quot;Estrato 2 294&quot;</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Coste:&quot;</span>, Cini<span class="sc">+</span><span class="fu">sum</span>(ch<span class="sc">*</span>nh.optim))</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Coste: 11960&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>size<span class="ot">&lt;-</span><span class="fu">strata.samplesize.cost</span>(<span class="at">Nh=</span>Nh, <span class="at">var=</span>vart, <span class="at">C=</span>C, <span class="at">cini=</span>Cini, <span class="at">ch=</span>ch, <span class="at">alloc=</span><span class="st">&quot;optim&quot;</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Tamaño de muestra&quot;</span>, size)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Tamaño de muestra 319.181361496403&quot;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>nh.optim<span class="ot">&lt;-</span><span class="fu">floor</span>(<span class="fu">strata.allocation</span>(<span class="at">Nh=</span>Nh, <span class="at">n=</span>size, <span class="at">var=</span>vart, <span class="at">alloc=</span><span class="st">&quot;optim&quot;</span>, <span class="at">C=</span>C, <span class="at">cini=</span>Cini, <span class="at">ch=</span>ch))</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="fu">c</span>(<span class="st">&quot;Estrato 1:&quot;</span>, <span class="st">&quot;Estrato 2&quot;</span>), nh.optim)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Estrato 1: 24&quot; &quot;Estrato 2 294&quot;</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Coste:&quot;</span>, Cini<span class="sc">+</span><span class="fu">sum</span>(ch<span class="sc">*</span>nh.optim))</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Coste: 11960&quot;</span></span></code></pre></div>
 </div>
 </div>
 

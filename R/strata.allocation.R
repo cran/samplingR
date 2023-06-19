@@ -32,7 +32,7 @@ strata.allocation<-function(Nh, n, var, alloc=c("unif", "prop", "min", "optim"),
     stop('Alloc must be one of c("unif", "prop", "min", "optim")')
 
   if((alloc=="min" || alloc=="optim") && missing(var)){
-    warning("Necessary var argument missing, will be set to worst case scenario value for each strata.\n");
+    warning("\nNecessary var argument missing, will be set to worst case scenario value for each strata.\n");
     var<-c(Nh/(Nh-1)*0.25)
   }
   if((alloc=="min" || alloc=="optim") && missing(var))stop('Strata variance values must be given for alloc=c("min","optim")')

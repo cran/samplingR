@@ -39,10 +39,10 @@ strata.samplesize<-function(Nh, var, error, alpha, estimator=c("total", "mean", 
   if(alloc=="optim" && (length(ch) != length(Nh))) stop("Strata costs lenght must be equal to strata size length")
 
   if((estimator=="proportion" || estimator=="class total") && missing(var)){
-    warning("Necessary var argument missing, will be set to worst case scenario value for each strata.\n")
+    warning("\nNecessary var argument missing, will be set to worst case scenario value for each strata.\n")
     var<-c(Nh/(Nh-1)*0.25)
   }
-  if(relative && (estimator=="proportion" || estimator=="class total") && missing(p)) {warning("Necessary p argument missing, will be set to worst case scenario value of 0.5\n"); p<-0.5}
+  if(relative && (estimator=="proportion" || estimator=="class total") && missing(p)) {warning("\nNecessary p argument missing, will be set to worst case scenario value of 0.5\n"); p<-0.5}
   if(!missing(p) && (p<0 || p>1) )stop("Proportion value must range between 0 and 1")
 
   if(relative && (error<0 || error>1))stop("Relative error must range between 0 and 1")

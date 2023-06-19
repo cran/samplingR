@@ -10,16 +10,16 @@
 #' At value=1 the systematic precision is minimum. At value=0 both sampling methods precision
 #' are equal. At value= \eqn{\frac{-1}{n-1}} systematic precision is maximum.\cr
 #' Summarising at values between 1 and 0 simple random sampling estimation has more precision
-#' than systematic, so method="srs" should be set at \code{\link{sys.estimator}}.
-#' The other way method="sys" of interpenetrating samples method is better.
+#' than systematic, so method="srs" should be set at \code{\link{syst.estimator}}.
+#' The other way method="syst" of interpenetrating samples method is better.
 #'
 #' @export
 #'
 #' @examples
 #' data<-c(1,3,5,2,4,6,2,7,3)
-#' sys.intracorr(9, 3, data)  #0.34375 example 1
+#' syst.intracorr(9, 3, data)  #0.34375 example 1
 
-sys.intracorr<-function(N, n, data){
+syst.intracorr<-function(N, n, data){
   k<-N/n
   m<-mean(data)
   s<-0
@@ -112,15 +112,15 @@ swst<-function(N, n, data){
 #' At value=1 the systematic precision is minimum. At value=0 both sampling methods precision
 #' are equal. At value= \eqn{\frac{-1}{n-1}} systematic precision is maximum.\cr
 #' Summarising at values between 1 and 0 stratified sampling estimation has more precision
-#' than systematic, so method="strata" should be set at \code{\link{sys.estimator}}.
-#' The other way method="sys" of interpenetrating samples method is better.
+#' than systematic, so method="strata" should be set at \code{\link{syst.estimator}}.
+#' The other way method="syst" of interpenetrating samples method is better.
 #' @export
 #'
 #' @examples
 #' data<-c(1,3,5,2,4,6,2,7,3)
-#' sys.intercorr(9,3,data)  #0.09022556
+#' syst.intercorr(9,3,data)  #0.09022556
 
-sys.intercorr<-function(N, n, data){
+syst.intercorr<-function(N, n, data){
   s<-0
   k<-N/n
   for(j in 1:k){
@@ -148,9 +148,9 @@ sys.intercorr<-function(N, n, data){
 #'
 #' @examples
 #' data<-c(1,3,5,2,4,6,2,7,3)
-#' sys.all.samples(data, 3)
+#' syst.all.samples(data, 3)
 
-sys.all.samples<-function(data, n){
+syst.all.samples<-function(data, n){
   N<-length(data)
   k<-N/n
   if(is(data, "vector")) data<-as.data.frame(data)
@@ -173,12 +173,12 @@ sys.all.samples<-function(data, n){
 #'
 #' @examples
 #' data<-c(1,3,5,2,4,6,2,7,3)
-#' sys.anova(data,3)
+#' syst.anova(data,3)
 
-sys.anova<-function(data, n){
+syst.anova<-function(data, n){
   N<-length(data)
   k<-N/n
-  samples<-sys.all.samples(data, n)
+  samples<-syst.all.samples(data, n)
   gl<-c(k-1, N-k, N-1)
   ss<-c(k*sum((sapply(samples,mean)-mean(data))^2), sum((data-sapply(samples,mean))^2), sum((data-mean(data))^2))
   sbs<-ss[1]/gl[1]

@@ -14,9 +14,9 @@
 #'
 #' @examples
 #' data<-runif(40)
-#' sys.sample(40,8, data)
+#' syst.sample(40,8, data)
 #'
-sys.sample<-function(N, n, data){
+syst.sample<-function(N, n, data){
 
   k<-floor(N/n)
   if(missing(data))return(srs.sample(k, 1)+ c(0:(n-1))*k)
