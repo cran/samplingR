@@ -2,6 +2,7 @@
 
 export(cluster.estimator)
 export(cluster.sample)
+export(cluster.samplesize)
 export(srs.domainestimator)
 export(srs.estimator)
 export(srs.sample)

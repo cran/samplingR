@@ -1,6 +1,6 @@
 #' @title Sample size estimation on stratified sampling
 #' @description Calculates the required sample size in order to achieve an
-#' absolute sampling error  less or equal to the specified for an specific
+#' absolute or relative sampling error  less or equal to the specified for an specific
 #' estimator and an optional confidence interval in stratified sampling.
 #'
 #' @param Nh Vector of population strata sizes.

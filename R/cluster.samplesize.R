@@ -1,3 +1,41 @@
+#' @title Sample size estimation on cluster sampling
+#' @description
+#' Calculates the required sample size in order to achieve an
+#' absolute sampling error  less or equal to the specified for an specific
+#' estimator and an optional confidence interval in cluster sampling.
+#'
+#' @param N Number of clusters in the population.
+#' @param data Dataset.
+#' @param error Sampling error.
+#' @param alpha Significance level to obtain confidence intervals.
+#' @param estimator The estimator to be estimated. Default is "total".
+#' @param replace Whether the samples to be taken can have repeated instances or not.
+#'
+#' @return Number of clusters to be taken.
+#'
+#' @details This function admits both grouped and non-grouped by cluster data.\cr
+#' Non-grouped data must have interest variable data in the first column and cluster
+#' name each individual belongs to in the last column.\cr
+#' Grouped by cluster data must have interest variable data in the first column,
+#' cluster size in the second and the cluster name in the last column. Interest
+#' values of grouped data must reflect the total value of each cluster.
+#'
+#' @export
+#'
+#' @examples
+#' d<-cbind(rnorm(500, 50, 20), rep(c(1:50),10)) #Non-grouped data
+#' sample<-cluster.sample(d, n=10) #Non-grouped sample
+#' sampleg<-aggregate(sample[,1], by=list(Category=sample[,2]), FUN=sum)
+#' sampleg<-cbind(sampleg[,2], rep(10,10), sampleg[,1]) #Sample sample with grouped data
+#'
+#' #Cluster size to be taken for estimation
+#' cluster.samplesize(N=50, data=sample, error=500, estimator="total", replace=TRUE)
+#'
+#' newsample<-cluster.sample(d, n=26) #New sample for estimation
+#' sum(d[,1])
+#' cluster.estimator(N=50, data=newsample, estimator="total", alpha=0.05, replace=TRUE)
+#' cluster.estimator(N=50, data=sampleg, estimator="total", alpha=0.05)
+
 cluster.samplesize<-function(N, data, error, alpha, estimator=c("total", "mean", "proportion", "class total"), replace=FALSE){
   estimator = match.arg(estimator)
 
